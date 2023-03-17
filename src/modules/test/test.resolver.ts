@@ -61,7 +61,7 @@ export class TestResolver {
         @Args('input') input: MovieInput
     ) {
         let data = await this.movieService.addNewMovie(input)
-        // pubSub.publish('dataAdded', { dataAdded: data });
+        pubSub.publish('dataAdded', { dataAdded: data });
         return data
     }
 
@@ -106,8 +106,8 @@ export class TestResolver {
         return data
     }
 
-    // @Subscription(() => Recive)
-    // dataAdded() {
-    //     return pubSub.asyncIterator('dataAdded');
-    // }
+    @Subscription(() => Movie)
+    dataAdded() {
+        return pubSub.asyncIterator('dataAdded');
+    }
 }

@@ -14,30 +14,30 @@ import { AuthModule } from './authentication/auth.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      subscriptions: {
-        'graphql-ws': {
-          onConnect: (context: any) => {
-            const { connectionParams, extra } = context;
-            // user validation will remain the same as in the example above
-            // when using with graphql-ws, additional context value should be stored in the extra field
-            extra.user = { user: {} };
-          },
-        },
-        'subscriptions-transport-ws': true,
-      },
-      context: ({ extra }) => {
-        // you can now access your additional context value through the extra field
-      },
       // subscriptions: {
-      //   'subscriptions-transport-ws': {
-      //     onConnect: (connectionParams) => {
-
+      //   'graphql-ws': {
+      //     onConnect: (context: any) => {
+      //       const { connectionParams, extra } = context;
+      //       // user validation will remain the same as in the example above
+      //       // when using with graphql-ws, additional context value should be stored in the extra field
+      //       extra.user = { user: {} };
       //     },
-      //   }
+      //   },
+      //   'subscriptions-transport-ws': true,
       // },
-      // context: ({ connection }) => {
-      //   // connection.context will be equal to what was returned by the "onConnect" callback
+      // context: ({ extra }) => {
+      //   // you can now access your additional context value through the extra field
       // },
+      subscriptions: {
+        'subscriptions-transport-ws': {
+          onConnect: (connectionParams) => {
+
+          },
+        }
+      },
+      context: ({ connection }) => {
+        // connection.context will be equal to what was returned by the "onConnect" callback
+      },
     }),
     TestModule,
     AuthModule
